@@ -2,6 +2,7 @@ package db
 
 import (
     "github.com/jinzhu/gorm"
+    _  "github.com/go-sql-driver/mysql"
     "fmt"
 	"mio2/interfaces/repositories"
 	"mio2/bootstrap"
