@@ -1,7 +1,7 @@
 package login
 
 import (
-    "mio2/domain"
+    "migoV2/domain"
     "errors"
     "fmt"
 )

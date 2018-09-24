@@ -8,7 +8,7 @@ import (
 	_ "github.com/dgrijalva/jwt-go"
 
 	"github.com/labstack/echo"
-	usecase "mio2/usecases/login"
+	usecase "migoV2/usecases/login"
 )
 
 // func (this *CLogin) RegisterServices() {

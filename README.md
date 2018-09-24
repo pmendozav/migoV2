@@ -23,7 +23,7 @@ Build and run
 ```
 go build
 
-./mio2
+./migoV2
 ```
 
 ### Examples

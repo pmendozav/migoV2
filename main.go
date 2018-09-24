@@ -1,11 +1,11 @@
 package main
 
 import (
-	"mio2/infrastructure/server"
-	"mio2/infrastructure/db"
-	"mio2/interfaces/repositories"
-	"mio2/interfaces/services"
-	"mio2/usecases/login"
+	"migoV2/infrastructure/server"
+	"migoV2/infrastructure/db"
+	"migoV2/interfaces/repositories"
+	"migoV2/interfaces/services"
+	"migoV2/usecases/login"
 
 )
 

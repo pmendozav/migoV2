@@ -4,8 +4,8 @@ import (
     "github.com/jinzhu/gorm"
     _  "github.com/go-sql-driver/mysql"
     "fmt"
-	"mio2/interfaces/repositories"
-	"mio2/bootstrap"
+	"migoV2/interfaces/repositories"
+	"migoV2/bootstrap"
 )
 
 type OrmHandler struct {

@@ -1,7 +1,7 @@
 package repositories
 
 import (
-	_ "mio2/domain"
+	_ "migoV2/domain"
 	_ "errors"
 )
 
