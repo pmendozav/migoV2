@@ -10,7 +10,7 @@ Simple Golang project based on clean-architecture approach
 ```
 go get github.com/kardianos/govendor
 ```
-* Change database parameters on: config/database.yaml
+* Change database parameters on: config/database.yaml (currently this uses bongo db)
 
 ### Installing
 
