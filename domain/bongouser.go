@@ -3,6 +3,7 @@ package domain
 type BongoUserRepository interface {
 	// FindUserByCredentials(userid, pass string) (BongoUser, error)
 	CreateUser(userid, pass, firstname, lastname, email string) (error)
+	GetUserInfo(userid, pass string) (BongoUser, error)
 }
 
 type BongoUser struct {

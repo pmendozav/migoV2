@@ -1,8 +1,9 @@
 package repositories
 
 import (
-	_ "migoV2/domain"
-	_ "errors"
+	"migoV2/domain"
+	"errors"
+	_ "fmt"
 )
 
 type DbBongoUserRepo DbRepo
@@ -20,23 +21,27 @@ func (repo *DbBongoUserRepo) CreateUser(userid, pass, firstname, lastname, email
 	return repo.dbHandler.Execute(statement, userid, pass, firstname, lastname, email)
 }
 
-// func (repo *DbBongoUserRepo) FindUserByCredentials(userid, pass string) (domain.BongoUser, error) {
-// 	tablename := "usuarios"
-// 	statement := "userid = ? and pass = ?"
-// 	columns := "firstname, pass2"
-// 	param1 := userid
-// 	param2 := pass
-// 	row := repo.dbHandler.Query(tablename, statement, columns, param1, param2)
+func (repo *DbBongoUserRepo) GetUserInfo(userid, pass string) (domain.BongoUser, error) {
+	tablename := "usuarios"
+	statement := "userid = ? and pass = ?"
+	columns := "firstname, lastname, userid, email"
+	param1 := userid
+	param2 := pass
 
-// 	var (
-// 		firstname string
-// 		pass2 string
-// 	)
+	rows := repo.dbHandler.Query(tablename, statement, columns, param1, param2)
 
-// 	if ok := row.Next(); !ok {
-// 		return domain.BongoUser{}, errors.New("Invalid credentials!")
-// 	}
+	var (
+		_firstname string
+		_lastname string
+		_userid string
+		_email string
+	)
 
-//     row.Scan(&firstname, &pass2)
-//     return domain.BongoUser{Firstname: firstname, Password: pass2}, nil
-// }
+	if ok := rows.Next(); !ok {
+		return domain.BongoUser{}, errors.New("Invalid credentials!")
+	}
+
+	rows.Scan(&_firstname, &_lastname, &_userid, &_email)
+	
+    return domain.BongoUser{Firstname: _firstname, Lastname: _lastname, Username:_userid, Email:_email}, nil
+}

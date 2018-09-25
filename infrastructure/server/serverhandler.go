@@ -15,7 +15,6 @@ func NewServerHandler() (*ServerHandler) {
 
 	serverHandler.Server = echo.New()
 
-	//middleware
 	serverHandler.Server.Use(middleware.Logger())
 	serverHandler.Server.Use(middleware.Recover())
 	serverHandler.Server.Use(middleware.BodyLimit("2M"))
@@ -23,7 +22,6 @@ func NewServerHandler() (*ServerHandler) {
 		Level: 7,
 	  }))
 
-	//cors
 	serverHandler.Server.Use(middleware.CORSWithConfig(middleware.CORSConfig{
 		AllowOrigins: []string{"*"},
 		AllowMethods: []string{echo.GET, echo.HEAD, echo.PUT, echo.PATCH, echo.POST, echo.DELETE},

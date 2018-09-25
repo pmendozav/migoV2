@@ -6,7 +6,7 @@ import (
 	"migoV2/interfaces/repositories"
 	"migoV2/interfaces/services"
 	"migoV2/usecases/login"
-
+	"migoV2/usecases/common"
 )
 
 func main() {
@@ -15,16 +15,27 @@ func main() {
 
 	handlers := make(map[string] repositories.DbHandler)
     handlers["DbBongoUserRepo"] = dbHandler
-    // handlers["DbCustomerRepo"] = dbHandler
+    handlers["DbBongoCommonRepo"] = dbHandler
 
-	createUserInteractor := new(login.BongoCreateUserInteractor)
+	//login service
+	createUserInteractor := new(login.BongoUserInteractor)
 	createUserInteractor.BongoUserRepository = repositories.NewDbBongoUserRepo(handlers)
-
 	loginServiceHandler := services.LoginServiceHandler{}
-	loginServiceHandler.BongoCreateUserInteractor = createUserInteractor
+	loginServiceHandler.BongoUserInteractor = createUserInteractor
 	
-	serverHandler.Server.POST("/signup", loginServiceHandler.Signup)
 
-	serverHandler.Server.Logger.Fatal(serverHandler.Server.Start(":8080"))
-	//app.Server.Logger.Fatal(app.Server.StartTLS(":8080", "./config/keys/server.crt", "./config/keys/server.key"))
+	//common service
+	createCommonInteractor := new(common.BongoCommonInteractor)
+	createCommonInteractor.BongoCommonRepository = repositories.NewDbBongoCommonRepo(handlers)
+	commonServiceHandler := services.CommonServiceHandler{}
+	commonServiceHandler.BongoCommonInteractor = createCommonInteractor
+
+
+	serverHandler.Server.POST("/signup", loginServiceHandler.Signup)
+	serverHandler.Server.POST("/login", loginServiceHandler.SignIn)
+
+	serverHandler.Server_r.GET("/partner/:wildcard", commonServiceHandler.FindPartnersWithWildcard)
+
+	// serverHandler.Server.Logger.Fatal(serverHandler.Server.Start(":8080"))
+	serverHandler.Server.Logger.Fatal(serverHandler.Server.StartTLS(":8080", "./config/keys/server.crt", "./config/keys/server.key"))
 }

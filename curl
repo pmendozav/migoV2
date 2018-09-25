@@ -17,3 +17,6 @@ curl -k -X GET https://0.0.0.0:8080/restricted/partner/id/ongo -H "Authorization
 curl -k -X POST https://0.0.0.0:8080/restricted/logs/connectlandedcost -d '{"partner_key":"83fe5d5562d1cef011a8d443a2dcd93f2c8ce1d3a296303626ef76f4af8eaa51","destination_country":"PE","Agent":"item_wildcard"}' -H "Content-Type: application/json" -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbiI6dHJ1ZSwiZXhwIjoxNTM2NTIxMzMxLCJuYW1lIjoicGF2ZWwifQ.Iph8nVrA6ufVBxn104dMolGhfAKW7X5a2FEKKGNk0HY"
 
 
+PARTNER INFO QUERY
+curl -k -X GET https://0.0.0.0:8080/restricted/partner/ongo -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbiI6dHJ1ZSwiZXhwIjoxNTM4MTc1MTM4LCJuYW1lIjoicGF2ZWwifQ.i63t5zn2uQOO3judk_MIN451h6yaBS67s8peOmPCsic"
+

@@ -17,7 +17,8 @@ func (handler *OrmHandler) Execute(statement string, params ...interface{}) (err
 }
 
 func (handler *OrmHandler) Query(tablename string, statement string, columns string, params ...interface{}) repositories.Row {
-	rows, _ := handler.Conn.Table(tablename).Where(statement, params).Select(columns).Rows()
+	rows, _ := handler.Conn.Table(tablename).Where(statement, params...).Select(columns).Rows()
+
     return rows
 }
 

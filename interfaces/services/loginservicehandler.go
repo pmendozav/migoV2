@@ -2,28 +2,23 @@ package services
 
 import (
 	"net/http"
-	"fmt"
+	_ "fmt"
 
-	_ "time"
-	_ "github.com/dgrijalva/jwt-go"
+	"time"
+	"github.com/dgrijalva/jwt-go"
 
 	"github.com/labstack/echo"
 	usecase "migoV2/usecases/login"
+	_ "migoV2/bootstrap"	
 )
 
-// func (this *CLogin) RegisterServices() {
-// 	app.Server.POST("/signup", this.signup)
-// 	app.Server.POST("/login", this.signin)
-// 	app.Server.GET("/login", this.signin)
-// }
-
-type BongoCreateUserInteractor interface {
+type BongoUserInteractor interface {
     CreateUser(user usecase.User) (error)
+    ValidateUser(user *usecase.User) (error)
 }
 
 type LoginServiceHandler struct {
-	BongoCreateUserInteractor BongoCreateUserInteractor
-	Mierda int
+	BongoUserInteractor BongoUserInteractor
 }
 
 func (handler *LoginServiceHandler) Signup(c echo.Context) error {
@@ -33,10 +28,9 @@ func (handler *LoginServiceHandler) Signup(c echo.Context) error {
 		return c.JSON(http.StatusOK, "Error binding arguments!")
 	}
 
-	err := handler.BongoCreateUserInteractor.CreateUser(*u)
+	err := handler.BongoUserInteractor.CreateUser(*u)
 
 	if err != nil {
-		fmt.Println(":::", err)
 		return c.JSON(http.StatusOK, "User no registered")
 	}
 
@@ -44,30 +38,30 @@ func (handler *LoginServiceHandler) Signup(c echo.Context) error {
 }
 
 
-// func (handler *LoginServiceHandler) signin(c Context) error {
-// 	username := c.FormValue("username")
-// 	password := c.FormValue("password")
+func (handler *LoginServiceHandler) SignIn(c echo.Context) error {
+	username := c.FormValue("username")
+	password := c.FormValue("password")
 	
-// 	if err := handler.BongoCreateUserInteractor.Login(username, password); err != nil {
-// 		token := jwt.New(jwt.SigningMethodHS256)
+	u := usecase.User{Username:username, Password:password}
 
-// 		// Set claims
-// 		claims := token.Claims.(jwt.MapClaims)
-// 		claims["name"] = username
-// 		claims["admin"] = true
-// 		claims["exp"] = time.Now().Add(time.Hour * 72).Unix()
+	if err := handler.BongoUserInteractor.ValidateUser(&u); err == nil {
+		token := jwt.New(jwt.SigningMethodHS256)
 
-// 		// Generate encoded token and send it as response.
-// 		t, err := token.SignedString([]byte("secret"))
+		claims := token.Claims.(jwt.MapClaims)
+		claims["name"] = username
+		claims["admin"] = true
+		claims["exp"] = time.Now().Add(time.Hour * 72).Unix()
 
-// 		if err != nil {
-// 			return err
-// 		}
+		t, err := token.SignedString([]byte("secret"))
 
-// 		return c.JSON(http.StatusOK, map[string]string{
-// 			"token": t,
-// 		})
-// 	}
+		if err != nil {
+			return err
+		}
 
-// 	return echo.ErrUnauthorized
-// }
+		return c.JSON(http.StatusOK, map[string]string {
+			"token": t,
+		})
+	}
+
+	return echo.ErrUnauthorized
+}
